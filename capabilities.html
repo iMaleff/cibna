@@ -11,26 +11,29 @@
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500&family=Playfair+Display:ital,wght@0,400;0,500;0,600;1,400&display=swap" rel="stylesheet">
     
     <style>
-        /* Copied CSS with Updated Header */
+        /* Shared CSS */
         :root { --bg-dark: #050505; --gold-accent: #d4af37; --text-main: #e6e6e6; --text-muted: #999; --border-light: rgba(255, 255, 255, 0.08); --font-serif: 'Playfair Display', serif; --font-sans: 'Inter', sans-serif; --container-width: 1200px; }
         * { margin: 0; padding: 0; box-sizing: border-box; }
         body { background-color: var(--bg-dark); color: var(--text-main); font-family: var(--font-sans); font-weight: 300; line-height: 1.6; letter-spacing: 0.02em; overflow-x: hidden; -webkit-font-smoothing: antialiased; }
+        
         h1, h2, h3 { font-family: var(--font-serif); font-weight: 600; color: white; }
+        
         a { text-decoration: none; color: inherit; transition: 0.3s ease; }
         .container { max-width: var(--container-width); margin: 0 auto; padding: 0 40px; width: 100%; }
-        .label-text { font-size: 0.8rem; text-transform: uppercase; letter-spacing: 3px; color: var(--gold-accent); display: block; margin-bottom: 25px; font-weight: 500; }
         .fade-in { opacity: 0; transform: translateY(30px); transition: 0.8s ease-out; }
         .fade-in.visible { opacity: 1; transform: translateY(0); }
         
-        /* Updated Header */
+        /* Header & Logo */
         header { position: fixed; top: 0; left: 0; width: 100%; height: auto; z-index: 1000; display: flex; align-items: center; transition: all 0.5s ease; padding: 20px 0; }
         header.scrolled { background: rgba(5, 5, 5, 0.7); backdrop-filter: blur(20px); border-bottom: 1px solid rgba(255,255,255,0.05); padding: 10px 0; }
         .header-inner { width: 100%; display: flex; justify-content: space-between; align-items: center; }
         
-        .logo-link { margin-left: -5px; }
+        /* Logo Alignment Fix */
+        .logo-link { display: block; margin-left: -5px; } 
         .logo-img { height: 160px; width: auto; display: block; transition: height 0.5s cubic-bezier(0.22, 1, 0.36, 1); }
-        header.scrolled .logo-img { height: 100px; }
+        header.scrolled .logo-img { height: 80px; }
         
+        /* Burger Alignment Fix */
         .burger-wrapper { cursor: pointer; padding: 10px; z-index: 1001; margin-right: -10px; }
         .burger-line { width: 40px; height: 2px; background: white; margin: 10px 0; transition: 0.4s ease; }
         .burger-wrapper:hover .burger-line { background: var(--gold-accent); }
@@ -56,35 +59,95 @@
         /* Page Content */
         .page-hero { 
             padding: 240px 0 100px; 
-            background: radial-gradient(circle at 70% 20%, #1a2233 0%, #050505 70%); 
+            background-color: var(--bg-dark);
+            background-image: radial-gradient(circle at 70% 20%, #1a2233 0%, #050505 70%);
+            background-repeat: no-repeat;
+            background-size: cover;
         }
         
+        /* --- UPDATED H1 STYLE --- */
         .gradient-title {
-            font-size: clamp(2.5rem, 5vw, 3rem);
-            margin-bottom: 60px;
-            background: linear-gradient(to right, #ffffff, #a0a0a0);
+            /* Smaller size */
+            font-size: clamp(2.5rem, 5vw, 4rem);
+            margin-bottom: 20px;
+            
+            /* Gradient text */
+            background: linear-gradient(to right, #ffffff, #999999);
             -webkit-background-clip: text;
             -webkit-text-fill-color: transparent;
             padding-bottom: 10px;
+            
+            /* Restored boldness & Increased spacing */
+            font-weight: 600; 
+            letter-spacing: 0.1em; /* Increased spacing */
+            line-height: 1.2;
+        }
+
+        .subtitle {
+            font-family: var(--font-sans);
+            font-size: clamp(1.1rem, 2.5vw, 1.5rem);
+            color: white;
+            font-weight: 300;
+            margin-bottom: 60px;
+            letter-spacing: 0.5px;
+            max-width: 800px;
+        }
+
+        .descriptors {
+            margin-bottom: 60px;
+            border-left: 2px solid var(--gold-accent);
+            padding-left: 25px;
+            max-width: 800px;
+        }
+
+        .descriptors strong {
+            display: block;
+            text-transform: uppercase;
+            letter-spacing: 3px;
+            color: var(--gold-accent);
+            margin-bottom: 15px;
+            font-weight: 500;
+            font-size: 0.7rem; 
+            opacity: 0.9;
+        }
+
+        .descriptors span {
+            font-family: var(--font-serif);
+            font-style: italic;
+            line-height: 1.5;
+            font-size: clamp(1.1rem, 2.5vw, 1.35rem);
+            color: #e0e0e0;
+            display: block;
         }
 
         .text-block { max-width: 800px; margin-bottom: 50px; }
         .text-block p { margin-bottom: 25px; color: #b0b0b0; font-size: 1.05rem; }
         footer { padding: 80px 0; text-align: center; border-top: 1px solid var(--border-light); font-size: 0.8rem; color: #555; text-transform: uppercase; letter-spacing: 1.5px; }
         
+        /* Responsive */
         @media (max-width: 1024px) {
              .logo-img { height: 120px; }
         }
 
         @media (max-width: 768px) { 
+            /* Fix for disappearing gradients on mobile */
+            body, .hero, .page-hero { 
+                background-attachment: scroll !important; 
+            }
+
             .container { padding: 0 25px; } 
             
             header { padding: 15px 0; }
-            .logo-img { height: 80px; }
+            .logo-img { height: 100px; }
             header.scrolled .logo-img { height: 60px; }
 
             .page-hero { padding: 160px 0 60px; } 
-            .gradient-title { margin-bottom: 30px; }
+            .gradient-title { margin-bottom: 15px; }
+            .subtitle { margin-bottom: 40px; }
+            
+            .descriptors { padding-left: 20px; margin-bottom: 40px; }
+            .descriptors strong { margin-bottom: 10px; letter-spacing: 2px; }
+            
             .menu-nav a { font-size: 1.8rem; }
             .text-block p { margin-bottom: 20px; font-size: 1rem; }
         }
@@ -115,14 +178,18 @@
     <section class="page-hero">
         <div class="container">
             <div class="fade-in">
-                <span class="label-text">Capabilities / Analytical Approach</span>
-                <h1 class="gradient-title">Service Descriptor</h1>
+                <!-- Title Structure -->
+                <h1 class="gradient-title">CIBNA</h1>
+                <h2 class="subtitle">Center for Integrative Biochemical & Neurofunctional Analytics</h2>
                 
+                <!-- Descriptors Block -->
+                <div class="descriptors">
+                    <strong>Service Descriptor</strong>
+                    <span>Independent analytical consulting through advanced biochemical, neurofunctional, and genomic case analysis.</span>
+                </div>
+                
+                <!-- Main Text -->
                 <div class="text-block">
-                    <p style="font-style: italic; color: white; font-family: var(--font-serif); font-size: clamp(1.2rem, 3vw, 1.5rem); margin-bottom: 40px; line-height: 1.4;">
-                        Independent analytical consulting through advanced biochemical, neurofunctional, and genomic case analysis.
-                    </p>
-                    
                     <p>CIBNA is a boutique analytical center built around a personalized, high-depth approach to case evaluation, centered on a proprietary analytical framework — a high-resolution methodology designed to interpret clinical complexity beyond the scope of conventional, functional, or integrative models.</p>
                     
                     <p>The CIBNA analytical framework was created by Elena Maleva, MD (Non-US), PhD, Medical Analyst with advanced training in Functional Nutrition and Genomics, and reflects years of work with multi-layered clinical data, scientific research, surgical expertise, and extensive experience in high-complexity case interpretation, where patient history, laboratory findings, biochemical signatures, genomic insights, and physiological patterns are woven into a coherent analytical narrative.</p>
@@ -145,7 +212,7 @@
     <script>
         window.addEventListener('scroll', () => { document.getElementById('siteHeader').classList.toggle('scrolled', window.scrollY > 50); });
         function toggleMenu() { document.getElementById('menu').classList.toggle('open'); document.querySelector('.burger-wrapper').classList.toggle('active'); document.body.style.overflow = document.body.style.overflow === 'hidden' ? 'auto' : 'hidden'; }
-        const observer = new IntersectionObserver((entries) => { entries.forEach(entry => { if(entry.isIntersecting) entry.target.classList.add('visible'); }); }, { threshold: 0.1 });
+        const observer = new IntersectionObserver((entries) => { entries.forEach(entry => { if(entry.isIntersecting) entry.target.classList.add('visible'); }); }, { threshold: 0 });
         document.querySelectorAll('.fade-in').forEach(el => observer.observe(el));
     </script>
 </body>
