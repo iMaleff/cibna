@@ -1,0 +1,259 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>CIBNA | Clinical Contexts</title>
+    <link rel="icon" type="image/svg+xml" href="favicon.svg">
+    <link rel="alternate icon" href="favicon.png">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500&family=Playfair+Display:ital,wght@0,400;0,500;0,600;1,400&display=swap" rel="stylesheet">
+
+    <style>
+        /* Shared Styles */
+        :root { --bg-dark: #050505; --gold-accent: #d4af37; --text-main: #e6e6e6; --text-muted: #999; --border-light: rgba(255, 255, 255, 0.08); --font-serif: 'Playfair Display', serif; --font-sans: 'Inter', sans-serif; --container-width: 1200px; }
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        
+        body { 
+            background-color: var(--bg-dark);
+            background-image: radial-gradient(circle at 50% 100%, #111926 0%, transparent 60%);
+            background-repeat: no-repeat; background-attachment: fixed;
+            color: var(--text-main); font-family: var(--font-sans); font-weight: 300; line-height: 1.6; letter-spacing: 0.02em; overflow-x: hidden; -webkit-font-smoothing: antialiased; 
+        }
+
+        h1, h2, h3 { font-family: var(--font-serif); font-weight: 600; color: white; }
+        a { text-decoration: none; color: inherit; transition: 0.3s ease; }
+        .container { max-width: var(--container-width); margin: 0 auto; padding: 0 40px; width: 100%; }
+        .label-text { font-size: 0.8rem; text-transform: uppercase; letter-spacing: 3px; color: var(--gold-accent); display: block; margin-bottom: 25px; font-weight: 500; }
+        .fade-in { opacity: 0; transform: translateY(30px); transition: 0.8s ease-out; }
+        .fade-in.visible { opacity: 1; transform: translateY(0); }
+        
+        /* Header */
+        header { position: fixed; top: 0; left: 0; width: 100%; height: auto; z-index: 1000; display: flex; align-items: center; transition: all 0.5s ease; padding: 20px 0; }
+        header.scrolled { background: rgba(5, 5, 5, 0.7); backdrop-filter: blur(20px); border-bottom: 1px solid rgba(255,255,255,0.05); padding: 10px 0; }
+        .header-inner { width: 100%; display: flex; justify-content: space-between; align-items: center; }
+        
+        .logo-link { margin-left: -5px; }
+        .logo-img { height: 160px; width: auto; display: block; transition: height 0.5s cubic-bezier(0.22, 1, 0.36, 1); }
+        header.scrolled .logo-img { height: 100px; }
+        
+        .burger-wrapper { cursor: pointer; padding: 10px; z-index: 1001; margin-right: -10px; }
+        .burger-line { width: 40px; height: 2px; background: white; margin: 10px 0; transition: 0.4s ease; }
+        .burger-wrapper:hover .burger-line { background: var(--gold-accent); }
+        .burger-wrapper.active .burger-line:first-child { transform: rotate(45deg) translate(8px, 9px); }
+        .burger-wrapper.active .burger-line:last-child { transform: rotate(-45deg) translate(8px, -9px); }
+
+        /* Menu */
+        .menu-overlay { position: fixed; top: 0; left: 0; width: 100%; height: 100vh; background: radial-gradient(circle at center, #111926 0%, #050505 100%); z-index: 999; display: flex; flex-direction: column; justify-content: center; align-items: center; opacity: 0; pointer-events: none; visibility: hidden; transition: opacity 0.5s ease, visibility 0.5s; }
+        .menu-overlay.open { opacity: 1; pointer-events: auto; visibility: visible; }
+        .menu-nav { display: flex; flex-direction: column; align-items: center; }
+        .menu-nav a { font-family: var(--font-serif); font-size: 2.2rem; font-weight: 400; color: white; text-transform: capitalize; display: block; margin: 15px 0; opacity: 0; transform: translateY(20px); transition: color 0.3s ease, transform 0.5s ease, opacity 0.5s ease; }
+        .menu-overlay.open .menu-nav a { opacity: 1; transform: translateY(0); }
+        .menu-overlay.open .menu-nav a:nth-child(1) { transition-delay: 0.1s; }
+        .menu-overlay.open .menu-nav a:nth-child(2) { transition-delay: 0.15s; }
+        .menu-overlay.open .menu-nav a:nth-child(3) { transition-delay: 0.2s; }
+        .menu-nav a:hover { color: var(--gold-accent); }
+        .menu-footer { margin-top: 60px; opacity: 0; transition: opacity 0.5s ease 0.3s; }
+        .menu-overlay.open .menu-footer { opacity: 1; }
+        .menu-footer a { font-family: var(--font-serif); font-size: 1.5rem; color: var(--gold-accent); border-bottom: none; }
+
+        /* Page Specific */
+        .page-hero { padding: 240px 0 80px; } 
+        
+        .intro-text { max-width: 800px; color: var(--text-muted); font-size: 1.1rem; margin-bottom: 60px; }
+        
+        .context-group { margin-bottom: 80px; }
+        .context-title { font-size: 1.8rem; color: white; margin-bottom: 30px; padding-bottom: 15px; border-bottom: 1px solid var(--border-light); }
+        
+        .context-list { list-style: none; padding-left: 0; }
+        .context-list li {
+            position: relative; padding-left: 20px; margin-bottom: 15px; color: #b0b0b0; font-size: 1.05rem;
+        }
+        .context-list li::before {
+            content: ''; position: absolute; left: 0; top: 10px; width: 4px; height: 4px; background: var(--gold-accent); border-radius: 50%;
+        }
+
+        .disclaimer-box { margin-top: 100px; padding: 40px; background: rgba(255,255,255,0.03); border-left: 2px solid var(--gold-accent); }
+
+        footer { padding: 80px 0; text-align: center; border-top: 1px solid var(--border-light); font-size: 0.8rem; color: #555; text-transform: uppercase; letter-spacing: 1.5px; }
+        
+        @media (max-width: 1024px) {
+             .logo-img { height: 120px; }
+        }
+
+        @media (max-width: 768px) { 
+            .container { padding: 0 25px; } 
+            
+            header { padding: 15px 0; }
+            .logo-img { height: 80px; }
+            header.scrolled .logo-img { height: 60px; }
+
+            .page-hero { padding: 160px 0 60px; }
+            .context-group { margin-bottom: 50px; }
+            .context-title { font-size: 1.5rem; }
+            .intro-text { margin-bottom: 40px; }
+        }
+    </style>
+</head>
+<body>
+    <header id="siteHeader">
+        <div class="container header-inner">
+            <a href="index.html" class="logo-link"><img src="logo.svg" alt="CIBNA" class="logo-img"></a>
+            <div class="burger-wrapper" onclick="toggleMenu()">
+                <div class="burger-line"></div>
+                <div class="burger-line"></div>
+            </div>
+        </div>
+    </header>
+
+    <div class="menu-overlay" id="menu">
+        <nav class="menu-nav">
+            <a href="index.html">Main</a>
+            <a href="capabilities.html">Capabilities</a>
+            <a href="clinical-contexts.html">Clinical Contexts</a>
+        </nav>
+        <div class="menu-footer">
+            <a href="mailto:contact@cibna.vip">contact@cibna.vip</a>
+        </div>
+    </div>
+
+    <section class="page-hero">
+        <div class="container">
+            <div class="fade-in">
+                <span class="label-text">Scope of Work</span>
+                <h1 style="font-size: clamp(2rem, 5vw, 3rem); margin-bottom: 40px;">Clinical Contexts</h1>
+                
+                <div class="intro-text">
+                    <p>CIBNA undertakes high-depth analytical work in complex clinical contexts where symptoms persist, interpretations diverge, or standard medical pathways fail to provide clarity.</p>
+                    <br>
+                    <p>The domains below reflect the types of clinical situations we analyze.<br>They do not represent medical treatment, therapeutic services, or disease-specific care.</p>
+                </div>
+
+                <div class="contexts-wrapper">
+                    <!-- Groups -->
+                    <div class="context-group fade-in">
+                        <h3 class="context-title">Complex & Unresolved Clinical Situations</h3>
+                        <ul class="context-list">
+                            <li>Persistent symptoms with inconclusive, incomplete, or conflicting findings</li>
+                            <li>Long diagnostic histories without a unifying explanatory framework</li>
+                            <li>Cases involving multiple specialists and fragmented interpretations</li>
+                            <li>“Everything appears normal” scenarios with ongoing functional impairment</li>
+                            <li>Situations requiring advanced synthesis across clinical history, laboratory data, and physiological patterns</li>
+                        </ul>
+                    </div>
+                    
+                    <!-- (Other context groups...) -->
+                    <div class="context-group fade-in">
+                        <h3 class="context-title">Systemic Neuro-Metabolic & Regulatory Complexity</h3>
+                        <ul class="context-list">
+                            <li>Multisystem clinical presentations involving neurological, metabolic, immune, and regulatory domains</li>
+                            <li>Conditions in which symptoms shift across systems over time rather than remaining localized</li>
+                            <li>Chronic or progressive states with unclear internal structure despite extensive evaluation</li>
+                            <li>Disrupted physiological adaptability, recovery capacity, and long-term resilience</li>
+                            <li>Clinical contexts where system-level dysregulation cannot be explained by isolated organ pathology</li>
+                        </ul>
+                    </div>
+                    
+                    <div class="context-group fade-in">
+                        <h3 class="context-title">Neurofunctional & Regulatory Instability</h3>
+                        <ul class="context-list">
+                            <li>Episodic or fluctuating neurological symptoms without clear structural explanation</li>
+                            <li>Paroxysmal, seizure-like, or transient neurological events with inconclusive findings</li>
+                            <li>Autonomic and regulatory instability affecting energy, cognition, and stress tolerance</li>
+                            <li>Central fatigue, cognitive overload, and reduced functional reserve</li>
+                            <li>Contexts suggesting disruption of regulatory coordination rather than focal disease</li>
+                        </ul>
+                    </div>
+
+                     <div class="context-group fade-in">
+                        <h3 class="context-title">Sleep & Circadian Regulation</h3>
+                        <ul class="context-list">
+                            <li>Persistent difficulty initiating or maintaining sleep</li>
+                            <li>Night awakenings, early awakenings, and non-restorative sleep</li>
+                            <li>Sleep–energy dysregulation affecting cognition, mood stability, and daytime function</li>
+                            <li>Sleep disruption occurring alongside neurofunctional, metabolic, or systemic complexity</li>
+                        </ul>
+                    </div>
+
+                    <div class="context-group fade-in">
+                        <h3 class="context-title">Neurodevelopmental & Pediatric Case Contexts</h3>
+                        <ul class="context-list">
+                            <li>Non-standard developmental trajectories and regulatory divergence</li>
+                            <li>Behavioral, sensory, and adaptive instability in childhood</li>
+                            <li>Pediatric complexity following infections, medications, or systemic stressors</li>
+                            <li>Autism-related analytical contexts where families seek deeper integrative interpretation</li>
+                            <li>Multisystem pediatric presentations requiring high-depth, cross-domain analysis</li>
+                        </ul>
+                    </div>
+
+                    <div class="context-group fade-in">
+                        <h3 class="context-title">Hematological & Oxygen Transport Complexity</h3>
+                        <ul class="context-list">
+                            <li>Persistent anemia-like presentations with paradoxical or inconclusive laboratory findings</li>
+                            <li>Lack of sustained response to standard, single-parameter interventions</li>
+                            <li>Discordance between hematological markers and clinical symptoms</li>
+                            <li>System-level patterns affecting oxygen delivery, energy availability, and resilience</li>
+                        </ul>
+                    </div>
+                    
+                    <div class="context-group fade-in">
+                        <h3 class="context-title">Metabolic & Cardiovascular Risk Contexts</h3>
+                        <ul class="context-list">
+                            <li>Persistent lipid profile abnormalities with unclear drivers</li>
+                            <li>Discordance between cholesterol markers and overall clinical presentation</li>
+                            <li>Long-term cardiovascular and metabolic risk assessment in complex cases</li>
+                            <li>System-level metabolic regulation patterns requiring integrated interpretation</li>
+                        </ul>
+                    </div>
+
+                    <div class="context-group fade-in">
+                        <h3 class="context-title">Physician-Supported Analytical Review</h3>
+                        <ul class="context-list">
+                            <li>Second-opinion analytical synthesis for complex or unresolved cases</li>
+                            <li>Advanced differential interpretation across biochemical, neurofunctional, and genomic data</li>
+                            <li>Literature-informed analytical review where clinical narratives diverge</li>
+                            <li>Analytical support to clarify patterns and inform further clinical decision-making</li>
+                        </ul>
+                    </div>
+                    
+                    <div class="context-group fade-in">
+                        <h3 class="context-title">Developmental, Resilience & Long-Term Health Architecture</h3>
+                        <ul class="context-list">
+                            <li>High-depth analytical evaluation of biological architecture in the absence of overt disease</li>
+                            <li>Identification of developmental, metabolic, and neurofunctional vulnerability patterns</li>
+                            <li>Strategic analysis of long-term adaptability, resilience, and physiological reserve</li>
+                            <li>Early identification of system-level constraints affecting future health trajectories</li>
+                            <li>Analytical support for informed long-term health and aging strategies in complex profiles</li>
+                        </ul>
+                    </div>
+
+                </div>
+
+                <div class="disclaimer-box fade-in">
+                    <h4 style="color:white; font-family:var(--font-serif); margin-bottom:15px; font-weight: 600;">Important Notice</h4>
+                    <p style="color: #bbb; font-size: 0.95rem;">
+                        CIBNA does not provide medical treatment or clinical care.<br>
+                        All work is conducted as high-depth analytical interpretation to support clinical decision-making by treating physicians and informed individuals.
+                    </p>
+                </div>
+
+            </div>
+        </div>
+    </section>
+
+    <footer>
+        <div class="container">
+            &copy; 2026 CIBNA. All Rights Reserved.<br>
+            Center for Integrative Biochemical & Neurofunctional Analytics
+        </div>
+    </footer>
+
+    <script>
+        window.addEventListener('scroll', () => { document.getElementById('siteHeader').classList.toggle('scrolled', window.scrollY > 50); });
+        function toggleMenu() { document.getElementById('menu').classList.toggle('open'); document.querySelector('.burger-wrapper').classList.toggle('active'); document.body.style.overflow = document.body.style.overflow === 'hidden' ? 'auto' : 'hidden'; }
+        const observer = new IntersectionObserver((entries) => { entries.forEach(entry => { if(entry.isIntersecting) entry.target.classList.add('visible'); }); }, { threshold: 0 });
+        document.querySelectorAll('.fade-in').forEach(el => observer.observe(el));
+    </script>
+</body>
+</html>

@@ -1,0 +1,152 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>CIBNA | Capabilities</title>
+    <link rel="icon" type="image/svg+xml" href="favicon.svg">
+    <link rel="alternate icon" href="favicon.png">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500&family=Playfair+Display:ital,wght@0,400;0,500;0,600;1,400&display=swap" rel="stylesheet">
+    
+    <style>
+        /* Copied CSS with Updated Header */
+        :root { --bg-dark: #050505; --gold-accent: #d4af37; --text-main: #e6e6e6; --text-muted: #999; --border-light: rgba(255, 255, 255, 0.08); --font-serif: 'Playfair Display', serif; --font-sans: 'Inter', sans-serif; --container-width: 1200px; }
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body { background-color: var(--bg-dark); color: var(--text-main); font-family: var(--font-sans); font-weight: 300; line-height: 1.6; letter-spacing: 0.02em; overflow-x: hidden; -webkit-font-smoothing: antialiased; }
+        h1, h2, h3 { font-family: var(--font-serif); font-weight: 600; color: white; }
+        a { text-decoration: none; color: inherit; transition: 0.3s ease; }
+        .container { max-width: var(--container-width); margin: 0 auto; padding: 0 40px; width: 100%; }
+        .label-text { font-size: 0.8rem; text-transform: uppercase; letter-spacing: 3px; color: var(--gold-accent); display: block; margin-bottom: 25px; font-weight: 500; }
+        .fade-in { opacity: 0; transform: translateY(30px); transition: 0.8s ease-out; }
+        .fade-in.visible { opacity: 1; transform: translateY(0); }
+        
+        /* Updated Header */
+        header { position: fixed; top: 0; left: 0; width: 100%; height: auto; z-index: 1000; display: flex; align-items: center; transition: all 0.5s ease; padding: 20px 0; }
+        header.scrolled { background: rgba(5, 5, 5, 0.7); backdrop-filter: blur(20px); border-bottom: 1px solid rgba(255,255,255,0.05); padding: 10px 0; }
+        .header-inner { width: 100%; display: flex; justify-content: space-between; align-items: center; }
+        
+        .logo-link { margin-left: -5px; }
+        .logo-img { height: 160px; width: auto; display: block; transition: height 0.5s cubic-bezier(0.22, 1, 0.36, 1); }
+        header.scrolled .logo-img { height: 100px; }
+        
+        .burger-wrapper { cursor: pointer; padding: 10px; z-index: 1001; margin-right: -10px; }
+        .burger-line { width: 40px; height: 2px; background: white; margin: 10px 0; transition: 0.4s ease; }
+        .burger-wrapper:hover .burger-line { background: var(--gold-accent); }
+        .burger-wrapper:hover .burger-line:first-child { transform: translateX(-5px); }
+        .burger-wrapper:hover .burger-line:last-child { transform: translateX(5px); }
+        .burger-wrapper.active .burger-line:first-child { transform: rotate(45deg) translate(8px, 9px); }
+        .burger-wrapper.active .burger-line:last-child { transform: rotate(-45deg) translate(8px, -9px); }
+
+        /* Menu */
+        .menu-overlay { position: fixed; top: 0; left: 0; width: 100%; height: 100vh; background: radial-gradient(circle at center, #111926 0%, #050505 100%); z-index: 999; display: flex; flex-direction: column; justify-content: center; align-items: center; opacity: 0; pointer-events: none; visibility: hidden; transition: opacity 0.5s ease, visibility 0.5s; }
+        .menu-overlay.open { opacity: 1; pointer-events: auto; visibility: visible; }
+        .menu-nav { display: flex; flex-direction: column; align-items: center; }
+        .menu-nav a { font-family: var(--font-serif); font-size: 2.2rem; font-weight: 400; color: white; text-transform: capitalize; display: block; margin: 15px 0; opacity: 0; transform: translateY(20px); transition: color 0.3s ease, transform 0.5s ease, opacity 0.5s ease; }
+        .menu-overlay.open .menu-nav a { opacity: 1; transform: translateY(0); }
+        .menu-overlay.open .menu-nav a:nth-child(1) { transition-delay: 0.1s; }
+        .menu-overlay.open .menu-nav a:nth-child(2) { transition-delay: 0.15s; }
+        .menu-overlay.open .menu-nav a:nth-child(3) { transition-delay: 0.2s; }
+        .menu-nav a:hover { color: var(--gold-accent); }
+        .menu-footer { margin-top: 60px; opacity: 0; transition: opacity 0.5s ease 0.3s; }
+        .menu-overlay.open .menu-footer { opacity: 1; }
+        .menu-footer a { font-family: var(--font-serif); font-size: 1.5rem; color: var(--gold-accent); border-bottom: none; }
+
+        /* Page Content */
+        .page-hero { 
+            padding: 240px 0 100px; 
+            background: radial-gradient(circle at 70% 20%, #1a2233 0%, #050505 70%); 
+        }
+        
+        .gradient-title {
+            font-size: clamp(2.5rem, 5vw, 3rem);
+            margin-bottom: 60px;
+            background: linear-gradient(to right, #ffffff, #a0a0a0);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            padding-bottom: 10px;
+        }
+
+        .text-block { max-width: 800px; margin-bottom: 50px; }
+        .text-block p { margin-bottom: 25px; color: #b0b0b0; font-size: 1.05rem; }
+        footer { padding: 80px 0; text-align: center; border-top: 1px solid var(--border-light); font-size: 0.8rem; color: #555; text-transform: uppercase; letter-spacing: 1.5px; }
+        
+        @media (max-width: 1024px) {
+             .logo-img { height: 120px; }
+        }
+
+        @media (max-width: 768px) { 
+            .container { padding: 0 25px; } 
+            
+            header { padding: 15px 0; }
+            .logo-img { height: 80px; }
+            header.scrolled .logo-img { height: 60px; }
+
+            .page-hero { padding: 160px 0 60px; } 
+            .gradient-title { margin-bottom: 30px; }
+            .menu-nav a { font-size: 1.8rem; }
+            .text-block p { margin-bottom: 20px; font-size: 1rem; }
+        }
+    </style>
+</head>
+<body>
+    <header id="siteHeader">
+        <div class="container header-inner">
+            <a href="index.html" class="logo-link"><img src="logo.svg" alt="CIBNA" class="logo-img"></a>
+            <div class="burger-wrapper" onclick="toggleMenu()">
+                <div class="burger-line"></div>
+                <div class="burger-line"></div>
+            </div>
+        </div>
+    </header>
+
+    <div class="menu-overlay" id="menu">
+        <nav class="menu-nav">
+            <a href="index.html">Main</a>
+            <a href="capabilities.html">Capabilities</a>
+            <a href="clinical-contexts.html">Clinical Contexts</a>
+        </nav>
+        <div class="menu-footer">
+            <a href="mailto:contact@cibna.vip">contact@cibna.vip</a>
+        </div>
+    </div>
+
+    <section class="page-hero">
+        <div class="container">
+            <div class="fade-in">
+                <span class="label-text">Capabilities / Analytical Approach</span>
+                <h1 class="gradient-title">Service Descriptor</h1>
+                
+                <div class="text-block">
+                    <p style="font-style: italic; color: white; font-family: var(--font-serif); font-size: clamp(1.2rem, 3vw, 1.5rem); margin-bottom: 40px; line-height: 1.4;">
+                        Independent analytical consulting through advanced biochemical, neurofunctional, and genomic case analysis.
+                    </p>
+                    
+                    <p>CIBNA is a boutique analytical center built around a personalized, high-depth approach to case evaluation, centered on a proprietary analytical framework — a high-resolution methodology designed to interpret clinical complexity beyond the scope of conventional, functional, or integrative models.</p>
+                    
+                    <p>The CIBNA analytical framework was created by Elena Maleva, MD (Non-US), PhD, Medical Analyst with advanced training in Functional Nutrition and Genomics, and reflects years of work with multi-layered clinical data, scientific research, surgical expertise, and extensive experience in high-complexity case interpretation, where patient history, laboratory findings, biochemical signatures, genomic insights, and physiological patterns are woven into a coherent analytical narrative.</p>
+                    
+                    <p>Our work is sought out by individuals and clinicians facing complex, non-standard clinical situations — cases in which existing data is inconclusive, interpretations across disciplines diverge, and clear clinical direction is difficult to establish.</p>
+                    
+                    <p>CIBNA supports physicians by undertaking the in-depth analytical work required by complex cases, synthesizing multidimensional biochemical, neurofunctional, and genomic data alongside focused review of relevant scientific literature, to clarify unresolved patterns and contribute to further clinical interpretation.</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <footer>
+        <div class="container">
+            &copy; 2026 CIBNA. All Rights Reserved.<br>
+            Center for Integrative Biochemical & Neurofunctional Analytics
+        </div>
+    </footer>
+
+    <script>
+        window.addEventListener('scroll', () => { document.getElementById('siteHeader').classList.toggle('scrolled', window.scrollY > 50); });
+        function toggleMenu() { document.getElementById('menu').classList.toggle('open'); document.querySelector('.burger-wrapper').classList.toggle('active'); document.body.style.overflow = document.body.style.overflow === 'hidden' ? 'auto' : 'hidden'; }
+        const observer = new IntersectionObserver((entries) => { entries.forEach(entry => { if(entry.isIntersecting) entry.target.classList.add('visible'); }); }, { threshold: 0.1 });
+        document.querySelectorAll('.fade-in').forEach(el => observer.observe(el));
+    </script>
+</body>
+</html>
